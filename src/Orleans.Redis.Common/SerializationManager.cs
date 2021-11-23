@@ -14,12 +14,10 @@ namespace Orleans.Redis.Common
     public class OrleansSerializationManager : ISerializationManager
     {
         private readonly SerializationManager _serializationManager;
-        private readonly MethodInfo _deserializeByteArrayMethod;
 
         public OrleansSerializationManager(SerializationManager serializationManager)
         {
             _serializationManager = serializationManager;
-            _deserializeByteArrayMethod = _serializationManager.GetType().GetMethod("DeserializeFromByteArray");
         }
 
         public T DeserializeFromByteArray<T>(byte[] data)
@@ -29,8 +27,7 @@ namespace Orleans.Redis.Common
 
         public object DeserializeFromByteArray(Type type, byte[] data)
         {
-            var method = _deserializeByteArrayMethod.MakeGenericMethod(type);
-            return method.Invoke(_serializationManager, new object[] { data });
+            return _serializationManager.DeserializeFromByteArray(data, type);
         }
 
         public byte[] SerializeToByteArray(object raw)
