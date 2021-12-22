@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using Serilog.Events;
+using Elastic.Apm.StackExchange.Redis;
 
 namespace Orleans.Storage
 {
@@ -53,6 +53,7 @@ namespace Orleans.Storage
         public async Task Init(CancellationToken ct)
         {
             _connectionMultiplexer = await _connectionMultiplexerFactory.CreateAsync(_options.ConnectionString);
+            _connectionMultiplexer.UseElasticApm();
         }
 
         public Task Close(CancellationToken ct)
@@ -143,7 +144,8 @@ namespace Orleans.Storage
             var currentETag = grainState.ETag;
             if (storedETag != currentETag)
             {
-                if (_options.ThrowExceptionOnInconsistentETag) {
+                if (_options.ThrowExceptionOnInconsistentETag)
+                {
                     // Etags don't match! Inconsistent state
                     throw new InconsistentStateException(
                         $"Inconsistent state detected while performing write operations for type:{stateType.Name}.", storedETag, currentETag);

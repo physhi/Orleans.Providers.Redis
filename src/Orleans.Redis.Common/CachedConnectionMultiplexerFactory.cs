@@ -1,4 +1,4 @@
-﻿using System.Collections.Concurrent;
+﻿using Elastic.Apm.StackExchange.Redis;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,6 +31,7 @@ namespace Orleans.Redis.Common
                     if (!_connectionMultiplexers.TryGetValue(configuration, out connectionMultiplexer))
                     {
                         connectionMultiplexer = await ConnectionMultiplexer.ConnectAsync(configuration);
+                        connectionMultiplexer.UseElasticApm();
                         _connectionMultiplexers.Add(configuration, connectionMultiplexer);
                     }
                 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>$(TargetFrameworkNetStandard)</TargetFramework>
     <Configurations>Debug;Release;Test</Configurations>
@@ -21,6 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Elastic.Apm.StackExchange.Redis" Version="1.12.1" />
     <PackageReference Include="Microsoft.Orleans.Core" Version="$(Microsoft_Orleans_Core)" />
     <PackageReference Include="Microsoft.Orleans.Server" Version="$(Microsoft_Orleans_Server)" />
     <PackageReference Include="Serilog" Version="$(Serilog)" />
