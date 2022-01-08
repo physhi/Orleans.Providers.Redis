@@ -11,7 +11,6 @@ using Orleans.Configuration;
 using Serilog.Core;
 using Orleans.Redis.Common;
 using System.Threading;
-using Elastic.Apm.StackExchange.Redis;
 
 namespace Orleans.Streaming.Redis.Storage
 {
@@ -60,8 +59,7 @@ namespace Orleans.Streaming.Redis.Storage
                   options,
                   connectionMultiplexerFactory,
                   loggerFactory,
-                  options.PersistenceLifetime == PersistenceLifetime.ServiceLifetime ? (serviceId + ":" + queueName) : (clusterId + ":" + queueName))
-        { }
+                  options.PersistenceLifetime == PersistenceLifetime.ServiceLifetime ? (serviceId + ":" + queueName) : (clusterId + ":" + queueName)) { }
 
         public async Task InitAsync(CancellationToken ct = default)
         {
@@ -74,7 +72,6 @@ namespace Orleans.Streaming.Redis.Storage
                 _logger.Debug("Initializing RedisDataManager with {QueueCacheSize} and connecting to {ConnectionString}", _options.QueueCacheSize, _options.ConnectionString);
 
                 _connectionMultiplexer = await _connectionMultiplexerFactory.CreateAsync(_options.ConnectionString);
-                _connectionMultiplexer.UseElasticApm();
 
                 if (ct.IsCancellationRequested) throw new TaskCanceledException();
             }
@@ -158,7 +155,7 @@ namespace Orleans.Streaming.Redis.Storage
                 }
 
                 var items = new List<RedisValue>();
-                while (items.Count < count && _queue.TryDequeue(out var item))
+                while(items.Count < count && _queue.TryDequeue(out var item))
                 {
                     items.Add(item);
                 }
@@ -266,7 +263,7 @@ namespace Orleans.Streaming.Redis.Storage
         {
             if (!(queueName.Length >= MINIMUM_KEY_LENGTH && queueName.Length <= MAXIMUM_KEY_LENGTH))
             {
-
+                
                 throw new ArgumentException("A queue name must be from {MINIMUM_KEY_LENGTH} through {MAXIMUM_KEY_LENGTH} characters long, while your queueName length is {queueName.Length}, queueName is {queueName}.", queueName);
             }
         }
