@@ -1,15 +1,14 @@
-﻿using Orleans.Redis.Common;
-using Orleans.Providers.Streams.Common;
-using Orleans.Serialization;
-using Orleans.Streams;
-using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Orleans.Providers.Streams.Redis
+﻿namespace Orleans.Providers.Streams.Redis
 {
+    using Orleans.Redis.Common;
+    using Orleans.Providers.Streams.Common;
+    using Orleans.Serialization;
+    using Orleans.Streams;
+    using StackExchange.Redis;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     /// <summary>
     /// Converts event data to and from RedisValue message
     /// </summary>

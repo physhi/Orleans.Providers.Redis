@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Orleans.Persistence.Redis.Helpers
+﻿namespace Orleans.Persistence.Redis.Helpers
 {
+    using Newtonsoft.Json;
+
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Since order is not guaranteed during serialization force dictionary to be sorted then write json.
     /// </summary>

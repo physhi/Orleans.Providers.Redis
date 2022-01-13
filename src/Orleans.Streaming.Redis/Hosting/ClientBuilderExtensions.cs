@@ -1,11 +1,9 @@
-﻿using Orleans.Configuration;
-using Orleans.Streaming;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Orleans.Hosting
+﻿namespace Orleans.Hosting
 {
+    using Orleans.Streaming;
+
+    using System;
+
     public static class ClientBuilderExtensions
     {
         /// <summary>

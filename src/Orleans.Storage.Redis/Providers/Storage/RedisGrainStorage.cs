@@ -1,23 +1,22 @@
-using Orleans.Redis.Common;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Orleans.Configuration;
-using Orleans.Runtime;
-using Orleans.Persistence.Redis.Extensions;
-using Orleans.Persistence.Redis.Helpers;
-using Serilog;
-using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading;
-using Serilog.Events;
-
 namespace Orleans.Storage
 {
+    using Orleans.Redis.Common;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
+    using Orleans.Configuration;
+    using Orleans.Runtime;
+    using Orleans.Persistence.Redis.Extensions;
+    using Orleans.Persistence.Redis.Helpers;
+    using Serilog;
+    using StackExchange.Redis;
+    using System;
+    using System.Collections.Generic;
+    using System.Security.Cryptography;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Threading;
+
     public class RedisGrainStorage : IGrainStorage, ILifecycleParticipant<ISiloLifecycle>
     {
         private readonly string _name;
@@ -77,7 +76,10 @@ namespace Orleans.Storage
             catch (Exception e)
             {
                 GetGrainContextedLogger(grainType, grainReference, grainState).Error(e, e.Message);
-                if (_options.RethrowExceptions) throw;
+                if (_options.RethrowExceptions)
+                {
+                    throw;
+                }
             }
         }
 
@@ -105,7 +107,10 @@ namespace Orleans.Storage
             catch (Exception e)
             {
                 GetGrainContextedLogger(grainType, grainReference, grainState).Error(e, e.Message);
-                if (_options.RethrowExceptions) throw;
+                if (_options.RethrowExceptions)
+                {
+                    throw;
+                }
             }
         }
 
@@ -121,7 +126,10 @@ namespace Orleans.Storage
             catch (Exception e)
             {
                 GetGrainContextedLogger(grainType, grainReference, grainState).Error(e, e.Message);
-                if (_options.RethrowExceptions) throw;
+                if (_options.RethrowExceptions)
+                {
+                    throw;
+                }
             }
         }
 
@@ -143,7 +151,8 @@ namespace Orleans.Storage
             var currentETag = grainState.ETag;
             if (storedETag != currentETag)
             {
-                if (_options.ThrowExceptionOnInconsistentETag) {
+                if (_options.ThrowExceptionOnInconsistentETag)
+                {
                     // Etags don't match! Inconsistent state
                     throw new InconsistentStateException(
                         $"Inconsistent state detected while performing write operations for type:{stateType.Name}.", storedETag, currentETag);
@@ -174,7 +183,7 @@ namespace Orleans.Storage
 
         public void Participate(ISiloLifecycle lifecycle)
         {
-            lifecycle.Subscribe(OptionFormattingUtilities.Name<RedisGrainStorage>(_name), _options.InitStage, Init, Close);
+            _ = lifecycle.Subscribe(OptionFormattingUtilities.Name<RedisGrainStorage>(_name), _options.InitStage, Init, Close);
         }
 
         private ILogger GetGrainContextedLogger(string grainType, GrainReference grainReference, IGrainState grainState)

@@ -1,17 +1,17 @@
-using Orleans.Configuration;
-using Orleans.Redis.Common;
-using Orleans.Streaming.Redis.Storage;
-using Orleans.Streams;
-using Serilog;
-using StackExchange.Redis;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Orleans.Providers.Streams.Redis
 {
+    using Orleans.Configuration;
+    using Orleans.Redis.Common;
+    using Orleans.Streaming.Redis.Storage;
+    using Orleans.Streams;
+
+    using Serilog;
+
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     internal class RedisQueueAdapter : IQueueAdapter
     {
         private readonly string ServiceId;
@@ -39,13 +39,40 @@ namespace Orleans.Providers.Streams.Redis
             string clusterId,
             string providerName)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
-            if (connectionMultiplexerFactory == null) throw new ArgumentNullException(nameof(connectionMultiplexerFactory));
-            if (dataAdapter == null) throw new ArgumentNullException(nameof(dataAdapter));
-            if (streamQueueMapper == null) throw new ArgumentNullException(nameof(streamQueueMapper));
-            if (string.IsNullOrEmpty(serviceId)) throw new ArgumentNullException(nameof(serviceId));
-            if (string.IsNullOrEmpty(clusterId)) throw new ArgumentNullException(nameof(clusterId));
-            if (string.IsNullOrEmpty(providerName)) throw new ArgumentNullException(nameof(providerName));
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (connectionMultiplexerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(connectionMultiplexerFactory));
+            }
+
+            if (dataAdapter == null)
+            {
+                throw new ArgumentNullException(nameof(dataAdapter));
+            }
+
+            if (streamQueueMapper == null)
+            {
+                throw new ArgumentNullException(nameof(streamQueueMapper));
+            }
+
+            if (string.IsNullOrEmpty(serviceId))
+            {
+                throw new ArgumentNullException(nameof(serviceId));
+            }
+
+            if (string.IsNullOrEmpty(clusterId))
+            {
+                throw new ArgumentNullException(nameof(clusterId));
+            }
+
+            if (string.IsNullOrEmpty(providerName))
+            {
+                throw new ArgumentNullException(nameof(providerName));
+            }
 
             _redisStreamOptions = options;
             _connectionMultiplexerFactory = connectionMultiplexerFactory;

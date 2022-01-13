@@ -1,18 +1,21 @@
-﻿using Orleans.Configuration;
-using Orleans.Redis.Common;
-using Orleans.Streaming.Redis.Storage;
-using Orleans.Streams;
-using Serilog;
-using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Orleans.Providers.Streams.Redis
+﻿namespace Orleans.Providers.Streams.Redis
 {
-    class RedisQueueAdapterReceiver : IQueueAdapterReceiver
+    using Orleans.Configuration;
+    using Orleans.Redis.Common;
+    using Orleans.Streaming.Redis.Storage;
+    using Orleans.Streams;
+
+    using Serilog;
+
+    using StackExchange.Redis;
+
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    internal class RedisQueueAdapterReceiver : IQueueAdapterReceiver
     {
         private IRedisDataManager _queue;
         private long _lastReadMessage;
@@ -37,11 +40,30 @@ namespace Orleans.Providers.Streams.Redis
             IConnectionMultiplexerFactory connectionMultiplexerFactory,
             IRedisDataAdapter dataAdapter)
         {
-            if (queueId == null) throw new ArgumentNullException(nameof(queueId));
-            if (string.IsNullOrEmpty(clusterId)) throw new ArgumentNullException(nameof(clusterId));
-            if (options == null) throw new ArgumentNullException(nameof(options));
-            if (connectionMultiplexerFactory == null) throw new ArgumentNullException(nameof(connectionMultiplexerFactory));
-            if (dataAdapter == null) throw new ArgumentNullException(nameof(dataAdapter));
+            if (queueId == null)
+            {
+                throw new ArgumentNullException(nameof(queueId));
+            }
+
+            if (string.IsNullOrEmpty(clusterId))
+            {
+                throw new ArgumentNullException(nameof(clusterId));
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (connectionMultiplexerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(connectionMultiplexerFactory));
+            }
+
+            if (dataAdapter == null)
+            {
+                throw new ArgumentNullException(nameof(dataAdapter));
+            }
 
             var queue = new RedisDataManager(options, connectionMultiplexerFactory, logger, queueId.ToString(), serviceId, clusterId);
             return new RedisQueueAdapterReceiver(logger, queueId, queue, dataAdapter);
@@ -49,9 +71,20 @@ namespace Orleans.Providers.Streams.Redis
 
         private RedisQueueAdapterReceiver(ILogger logger, QueueId queueId, RedisDataManager queue, IRedisDataAdapter dataAdapter)
         {
-            if (queueId == null) throw new ArgumentNullException(nameof(queueId));
-            if (queue == null) throw new ArgumentNullException(nameof(queue));
-            if (dataAdapter == null) throw new ArgumentNullException(nameof(queue));
+            if (queueId == null)
+            {
+                throw new ArgumentNullException(nameof(queueId));
+            }
+
+            if (queue == null)
+            {
+                throw new ArgumentNullException(nameof(queue));
+            }
+
+            if (dataAdapter == null)
+            {
+                throw new ArgumentNullException(nameof(queue));
+            }
 
             Id = queueId;
             _queue = queue ?? throw new ArgumentNullException(nameof(queue));
@@ -117,7 +150,10 @@ namespace Orleans.Providers.Streams.Redis
             try
             {
                 var queueRef = _queue; // store direct ref, in case we are somehow asked to shutdown while we are receiving.    
-                if (queueRef == null) return new List<IBatchContainer>();
+                if (queueRef == null)
+                {
+                    return new List<IBatchContainer>();
+                }
 
                 int count = maxCount < 0 || maxCount == QueueAdapterConstants.UNLIMITED_GET_QUEUE_MSG ? RedisDataManager.UnlimitedMessageCount : maxCount;
 

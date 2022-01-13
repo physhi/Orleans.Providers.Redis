@@ -1,8 +1,9 @@
-﻿using Orleans.Streaming;
-using System;
-
-namespace Orleans.Hosting
+﻿namespace Orleans.Hosting
 {
+    using Orleans.Streaming;
+
+    using System;
+
     public static class SiloBuilderExtensions
     {
         /// <summary>

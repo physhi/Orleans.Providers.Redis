@@ -1,10 +1,12 @@
-using Orleans.Redis.Common;
-using StackExchange.Redis;
-using System;
-using System.Threading.Tasks;
-
 namespace Orleans.Persistence.Redis.Extensions
 {
+    using Orleans.Redis.Common;
+
+    using StackExchange.Redis;
+
+    using System;
+    using System.Threading.Tasks;
+
     internal static class StackExchangeRedisExtension
     {
         #region String helpers
@@ -36,10 +38,10 @@ namespace Orleans.Persistence.Redis.Extensions
         {
             string key = CreateUrn<T>(objectId);
             var data = serializationManager.SerializeToByteArray(value);
-            await redisClient.StringSetAsync(key, data);
+            _ = await redisClient.StringSetAsync(key, data);
             if (expireTime.HasValue)
             {
-                await redisClient.KeyExpireAsync(key, expireTime);
+                _ = await redisClient.KeyExpireAsync(key, expireTime);
             }
         }
 
@@ -47,21 +49,21 @@ namespace Orleans.Persistence.Redis.Extensions
         {
             string key = CreateUrn(objectId, type);
             var data = serializationManager.SerializeToByteArray(value);
-            await redisClient.StringSetAsync(key, data);
+            _ = await redisClient.StringSetAsync(key, data);
             if (expireTime.HasValue)
             {
-                await redisClient.KeyExpireAsync(key, expireTime);
+                _ = await redisClient.KeyExpireAsync(key, expireTime);
             }
         }
 
         public static async Task DeleteObjectAsync<T>(this IDatabase redisClient, string objectId)
         {
-            await redisClient.KeyDeleteAsync(CreateUrn<T>(objectId));
+            _ = await redisClient.KeyDeleteAsync(CreateUrn<T>(objectId));
         }
 
         public static async Task DeleteObjectAsync(this IDatabase redisClient, Type type, string objectId)
         {
-            await redisClient.KeyDeleteAsync(CreateUrn(objectId, type));
+            _ = await redisClient.KeyDeleteAsync(CreateUrn(objectId, type));
         }
 
         #endregion

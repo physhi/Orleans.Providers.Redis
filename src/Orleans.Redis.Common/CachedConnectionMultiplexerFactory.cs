@@ -1,11 +1,11 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using StackExchange.Redis;
-
-namespace Orleans.Redis.Common
+﻿namespace Orleans.Redis.Common
 {
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using StackExchange.Redis;
+
     /// <summary>
     /// Caches connections based on the configuration string and reuses them
     /// if able.
@@ -36,7 +36,7 @@ namespace Orleans.Redis.Common
                 }
                 finally
                 {
-                    _lock.Release();
+                    _ = _lock.Release();
                 }
             }
 

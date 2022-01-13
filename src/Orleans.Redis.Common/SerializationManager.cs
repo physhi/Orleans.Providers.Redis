@@ -1,9 +1,9 @@
-﻿using Orleans.Serialization;
-using System;
-using System.Reflection;
-
-namespace Orleans.Redis.Common
+﻿namespace Orleans.Redis.Common
 {
+    using Orleans.Serialization;
+
+    using System;
+
     public interface ISerializationManager
     {
         byte[] SerializeToByteArray(object raw);

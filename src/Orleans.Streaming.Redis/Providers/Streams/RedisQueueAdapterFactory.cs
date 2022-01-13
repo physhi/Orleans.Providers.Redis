@@ -1,18 +1,17 @@
-﻿using Orleans.Redis.Common;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Orleans.Configuration;
-using Orleans.Configuration.Overrides;
-using Orleans.Providers.Streams.Common;
-using Orleans.Streams;
-using Serilog;
-using StackExchange.Redis;
-using System;
-using System.Threading.Tasks;
-using Orleans.Runtime;
-
-namespace Orleans.Providers.Streams.Redis
+﻿namespace Orleans.Providers.Streams.Redis
 {
+    using Orleans.Redis.Common;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
+    using Orleans.Configuration;
+    using Orleans.Configuration.Overrides;
+    using Orleans.Providers.Streams.Common;
+    using Orleans.Streams;
+    using Serilog;
+    using System;
+    using System.Threading.Tasks;
+    using Orleans.Runtime;
+
     public class RedisQueueAdapterFactory : IQueueAdapterFactory
     {
         private readonly string _providerName;
@@ -41,15 +40,50 @@ namespace Orleans.Providers.Streams.Redis
             ILogger logger,
             ISerializationManager serializationManager)
         {
-            if (string.IsNullOrEmpty(name)) throw new ArgumentNullException(nameof(name));
-            if (options == null) throw new ArgumentNullException(nameof(options));
-            if (connectionMultiplexerFactory == null) throw new ArgumentNullException(nameof(connectionMultiplexerFactory));
-            if (queueMapperOptions == null) throw new ArgumentNullException(nameof(queueMapperOptions));
-            if (cacheOptions == null) throw new ArgumentNullException(nameof(cacheOptions));
-            if (serviceProvider == null) throw new ArgumentNullException(nameof(serviceProvider));
-            if (clusterOptions == null) throw new ArgumentNullException(nameof(clusterOptions));
-            if (dataAdapter == null) throw new ArgumentNullException(nameof(dataAdapter));
-            if (serializationManager == null) throw new ArgumentNullException(nameof(serializationManager));
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            if (connectionMultiplexerFactory == null)
+            {
+                throw new ArgumentNullException(nameof(connectionMultiplexerFactory));
+            }
+
+            if (queueMapperOptions == null)
+            {
+                throw new ArgumentNullException(nameof(queueMapperOptions));
+            }
+
+            if (cacheOptions == null)
+            {
+                throw new ArgumentNullException(nameof(cacheOptions));
+            }
+
+            if (serviceProvider == null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
+            }
+
+            if (clusterOptions == null)
+            {
+                throw new ArgumentNullException(nameof(clusterOptions));
+            }
+
+            if (dataAdapter == null)
+            {
+                throw new ArgumentNullException(nameof(dataAdapter));
+            }
+
+            if (serializationManager == null)
+            {
+                throw new ArgumentNullException(nameof(serializationManager));
+            }
 
             _providerName = name;
             _options = options;
@@ -66,8 +100,7 @@ namespace Orleans.Providers.Streams.Redis
 
         public virtual void Init()
         {
-            StreamFailureHandlerFactory = StreamFailureHandlerFactory ??
-                ((qid) => Task.FromResult<IStreamFailureHandler>(new LoggingStreamDeliveryFailureHandler(_logger)));
+            StreamFailureHandlerFactory ??= ((qid) => Task.FromResult<IStreamFailureHandler>(new LoggingStreamDeliveryFailureHandler(_logger)));
         }
 
         public Task<IQueueAdapter> CreateAdapter()
@@ -75,7 +108,7 @@ namespace Orleans.Providers.Streams.Redis
             var adapter = new RedisQueueAdapter(
                 _options,
                 _connectionMultiplexerFactory,
-                _dataAdapter, 
+                _dataAdapter,
                 _streamQueueMapper,
                 _logger,
                 _clusterOptions.ServiceId,

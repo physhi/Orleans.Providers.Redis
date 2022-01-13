@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using StackExchange.Redis;
-
-namespace Orleans.Streaming.Redis.Storage
+﻿namespace Orleans.Streaming.Redis.Storage
 {
+    using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using StackExchange.Redis;
+
     internal interface IRedisDataManager
     {
         string QueueName { get; }

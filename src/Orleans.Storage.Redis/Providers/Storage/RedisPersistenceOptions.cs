@@ -1,8 +1,9 @@
-﻿using Orleans.Runtime;
-using System;
-
-namespace Orleans.Configuration
+﻿namespace Orleans.Configuration
 {
+    using Orleans.Runtime;
+
+    using System;
+
     public class RedisGrainStorageOptions : RedisOptions
     {
         /// <summary>
@@ -11,7 +12,7 @@ namespace Orleans.Configuration
         public int InitStage { get; set; } = DEFAULT_INIT_STAGE;
         public const int DEFAULT_INIT_STAGE = ServiceLifecycleStage.ApplicationServices;
 
-        public PersistenceLifetime PersistenceLifetime { get;set; } = DEFAULT_PERSISTENCE_LIFETIME;
+        public PersistenceLifetime PersistenceLifetime { get; set; } = DEFAULT_PERSISTENCE_LIFETIME;
         public const PersistenceLifetime DEFAULT_PERSISTENCE_LIFETIME = PersistenceLifetime.ServiceLifetime;
 
         public bool ThrowExceptionOnInconsistentETag { get; set; } = true;
@@ -36,9 +37,11 @@ namespace Orleans.Configuration
 
         public void ValidateConfiguration()
         {
-            if (String.IsNullOrEmpty(options.ConnectionString))
+            if (string.IsNullOrEmpty(options.ConnectionString))
+            {
                 throw new OrleansConfigurationException(
                     $"{nameof(RedisGrainStorageOptions)} on stream provider {this.name} is invalid. {nameof(RedisGrainStorageOptions.ConnectionString)} is invalid");
+            }
         }
     }
 }

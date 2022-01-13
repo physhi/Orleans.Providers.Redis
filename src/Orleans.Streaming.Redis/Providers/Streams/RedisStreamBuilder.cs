@@ -1,15 +1,17 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Orleans.ApplicationParts;
-using Orleans.Configuration;
-using Orleans.Hosting;
-using Orleans.Providers.Streams.Redis;
-using Orleans.Redis.Common;
-using Orleans.Streams;
-using System;
-
-namespace Orleans.Streaming
+﻿namespace Orleans.Streaming
 {
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
+
+    using Orleans.ApplicationParts;
+    using Orleans.Configuration;
+    using Orleans.Hosting;
+    using Orleans.Providers.Streams.Redis;
+    using Orleans.Redis.Common;
+    using Orleans.Streams;
+
+    using System;
+
     public class SiloRedisStreamConfigurator : SiloPersistentStreamConfigurator
     {
         public SiloRedisStreamConfigurator(string name, Action<Action<IServiceCollection>> configureServicesDelegate, Action<Action<IApplicationPartManager>> configureAppPartsDelegate)
@@ -17,20 +19,20 @@ namespace Orleans.Streaming
         {
             configureAppPartsDelegate(parts =>
             {
-                parts.AddFrameworkPart(typeof(RedisQueueAdapterFactory).Assembly);
+                _ = parts.AddFrameworkPart(typeof(RedisQueueAdapterFactory).Assembly);
             });
-            
-            configureServicesDelegate(services => 
+
+            configureServicesDelegate(services =>
             {
                 services.TryAddSingleton(SilentLogger.Logger);
-                services.ConfigureNamedOptionForLogging<RedisStreamOptions>(name);
+                _ = services.ConfigureNamedOptionForLogging<RedisStreamOptions>(name);
                 services.TryAddSingleton(CachedConnectionMultiplexerFactory.Default);
                 services.TryAddSingleton<ISerializationManager, OrleansSerializationManager>();
-                services.AddSingleton<IRedisDataAdapter, RedisDataAdapter>();
-                services.AddTransient<IConfigurationValidator>(sp => new RedisStreamOptionsValidator(sp.GetOptionsByName<RedisStreamOptions>(name), name));
-                services.ConfigureNamedOptionForLogging<SimpleQueueCacheOptions>(name);
-                services.AddTransient<IConfigurationValidator>(sp => SimpleQueueCacheOptionsValidator.Create(sp, name));
-                services.ConfigureNamedOptionForLogging<HashRingStreamQueueMapperOptions>(name);
+                _ = services.AddSingleton<IRedisDataAdapter, RedisDataAdapter>();
+                _ = services.AddTransient<IConfigurationValidator>(sp => new RedisStreamOptionsValidator(sp.GetOptionsByName<RedisStreamOptions>(name), name));
+                _ = services.ConfigureNamedOptionForLogging<SimpleQueueCacheOptions>(name);
+                _ = services.AddTransient<IConfigurationValidator>(sp => SimpleQueueCacheOptionsValidator.Create(sp, name));
+                _ = services.ConfigureNamedOptionForLogging<HashRingStreamQueueMapperOptions>(name);
             });
 
             this.ConfigureStreamPubSub(StreamPubSubType.ExplicitGrainBasedAndImplicit);
@@ -60,17 +62,17 @@ namespace Orleans.Streaming
         public ClusterClientRedisStreamConfigurator(string name, IClientBuilder builder)
             : base(name, builder, RedisQueueAdapterFactory.Create)
         {
-            builder
+            _ = builder
                 .ConfigureApplicationParts(parts => parts.AddFrameworkPart(typeof(RedisQueueAdapterFactory).Assembly))
                 .ConfigureServices(services =>
                 {
                     services.TryAddSingleton(SilentLogger.Logger);
-                    services.ConfigureNamedOptionForLogging<RedisStreamOptions>(name);
+                    _ = services.ConfigureNamedOptionForLogging<RedisStreamOptions>(name);
                     services.TryAddSingleton(CachedConnectionMultiplexerFactory.Default);
                     services.TryAddSingleton<ISerializationManager, OrleansSerializationManager>();
-                    services.AddSingleton<IRedisDataAdapter, RedisDataAdapter>();
-                    services.AddTransient<IConfigurationValidator>(sp => new RedisStreamOptionsValidator(sp.GetOptionsByName<RedisStreamOptions>(name), name));
-                    services.ConfigureNamedOptionForLogging<HashRingStreamQueueMapperOptions>(name);
+                    _ = services.AddSingleton<IRedisDataAdapter, RedisDataAdapter>();
+                    _ = services.AddTransient<IConfigurationValidator>(sp => new RedisStreamOptionsValidator(sp.GetOptionsByName<RedisStreamOptions>(name), name));
+                    _ = services.ConfigureNamedOptionForLogging<HashRingStreamQueueMapperOptions>(name);
                 });
         }
 

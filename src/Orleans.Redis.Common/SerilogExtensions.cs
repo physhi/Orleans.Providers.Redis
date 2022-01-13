@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-
-namespace Orleans.Redis.Common
+﻿namespace Orleans.Redis.Common
 {
+    using System.Collections.Generic;
+
+    using Serilog;
+    using Serilog.Core;
+    using Serilog.Events;
+
     public static class SerilogExtensions
     {
         public static ILogger ForContext<T>(this ILogger logger, IDictionary<string, object> properties, bool destructureObjects = false)
@@ -16,18 +15,15 @@ namespace Orleans.Redis.Common
 
         public static ILogger ForContext(this ILogger logger, IDictionary<string, object> properties, bool destructureObjects = false)
         {
-            if (properties == null || properties.Count == 0)
-            {
-                return logger;
-            }
-
-            return logger.ForContext(new DictionaryEventEnricher(properties, destructureObjects));
+            return properties == null || properties.Count == 0
+                ? logger
+                : logger.ForContext(new DictionaryEventEnricher(properties, destructureObjects));
         }
 
-        class DictionaryEventEnricher : ILogEventEnricher
+        private class DictionaryEventEnricher : ILogEventEnricher
         {
-            readonly IDictionary<string, object> _properties;
-            readonly bool _destructureObjects;
+            private readonly IDictionary<string, object> _properties;
+            private readonly bool _destructureObjects;
 
             public DictionaryEventEnricher(IDictionary<string, object> properties, bool destructureObjects)
             {

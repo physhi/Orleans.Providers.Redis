@@ -1,19 +1,15 @@
-﻿using Orleans.Redis.Common;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
-using Orleans.Configuration;
-using Orleans.Hosting;
-using Orleans.Providers;
-using Orleans.Runtime;
-using Orleans.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Orleans.Storage;
-
-namespace Orleans.Hosting
+﻿namespace Orleans.Hosting
 {
+    using Orleans.Redis.Common;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.DependencyInjection.Extensions;
+    using Microsoft.Extensions.Options;
+    using Orleans.Configuration;
+    using Orleans.Providers;
+    using Orleans.Runtime;
+    using System;
+    using Orleans.Storage;
+
     public static class RedisStorageBuilderExtensions
     {
         /// <summary>
@@ -39,12 +35,12 @@ namespace Orleans.Hosting
             services.TryAddSingleton(SilentLogger.Logger);
             services.TryAddSingleton(CachedConnectionMultiplexerFactory.Default);
             services.TryAddSingleton<ISerializationManager, OrleansSerializationManager>();
-            services.AddTransient<IConfigurationValidator>(sp => new RedisGrainStorageOptionsValidator(sp.GetService<IOptionsSnapshot<RedisGrainStorageOptions>>().Get(name), name));
-            services.ConfigureNamedOptionForLogging<RedisGrainStorageOptions>(name);
+            _ = services.AddTransient<IConfigurationValidator>(sp => new RedisGrainStorageOptionsValidator(sp.GetService<IOptionsSnapshot<RedisGrainStorageOptions>>().Get(name), name));
+            _ = services.ConfigureNamedOptionForLogging<RedisGrainStorageOptions>(name);
             services.TryAddSingleton(sp => sp.GetServiceByName<IGrainStorage>(ProviderConstants.DEFAULT_STORAGE_PROVIDER_NAME));
 
-            services.AddSingletonNamedService(name, RedisGrainStorageFactory.Create);
-            services.AddSingletonNamedService(name, (s, n) => (ILifecycleParticipant<ISiloLifecycle>)s.GetRequiredServiceByName<IGrainStorage>(n));
+            _ = services.AddSingletonNamedService(name, RedisGrainStorageFactory.Create);
+            _ = services.AddSingletonNamedService(name, (s, n) => (ILifecycleParticipant<ISiloLifecycle>)s.GetRequiredServiceByName<IGrainStorage>(n));
             return services;
         }
     }

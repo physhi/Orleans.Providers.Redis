@@ -1,13 +1,15 @@
-﻿using Newtonsoft.Json;
-using Orleans.Providers.Streams.Common;
-using Orleans.Runtime;
-using Orleans.Streams;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Orleans.Providers.Streams.Redis
+﻿namespace Orleans.Providers.Streams.Redis
 {
+    using Newtonsoft.Json;
+
+    using Orleans.Providers.Streams.Common;
+    using Orleans.Runtime;
+    using Orleans.Streams;
+
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     [Serializable]
     public class RedisBatchContainer : IBatchContainer
     {
@@ -49,7 +51,10 @@ namespace Orleans.Providers.Streams.Redis
             List<object> events,
             Dictionary<string, object> requestContext)
         {
-            if (events == null) throw new ArgumentNullException(nameof(events), "Message contains no events");
+            if (events == null)
+            {
+                throw new ArgumentNullException(nameof(events), "Message contains no events");
+            }
 
             StreamGuid = streamGuid;
             StreamNamespace = streamNamespace;

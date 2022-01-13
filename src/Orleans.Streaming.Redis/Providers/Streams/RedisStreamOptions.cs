@@ -1,8 +1,9 @@
-using Orleans.Runtime;
-using System;
-
 namespace Orleans.Configuration
 {
+    using Orleans.Runtime;
+
+    using System;
+
     public class RedisStreamOptions : RedisOptions
     {
         /// <summary>
@@ -24,7 +25,7 @@ namespace Orleans.Configuration
         /// Defaults to true
         /// </summary>
         public PersistenceLifetime PersistenceLifetime { get; set; } = DEFAULT_PERSISTENCE_LIFETIME;
-        
+
         /// <summary>
         /// Dictates how stream pubsub channels are named. In nearly all normal situations this
         /// should probably be PersistenceLifetime.ClusterLifetime.
@@ -45,9 +46,11 @@ namespace Orleans.Configuration
 
         public void ValidateConfiguration()
         {
-            if (String.IsNullOrEmpty(options.ConnectionString))
+            if (string.IsNullOrEmpty(options.ConnectionString))
+            {
                 throw new OrleansConfigurationException(
                     $"{nameof(RedisStreamOptions)} on stream provider {this.name} is invalid. {nameof(RedisStreamOptions.ConnectionString)} is invalid");
+            }
         }
     }
 }

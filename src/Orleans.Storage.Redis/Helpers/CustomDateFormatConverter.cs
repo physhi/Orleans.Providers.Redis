@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Orleans.Persistence.Redis.Helpers
+﻿namespace Orleans.Persistence.Redis.Helpers
 {
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Converters;
+
+    using System;
+
     /// <summary>
     /// When serializing dates and deserializing dates offsets can change.
     /// Which then can causes issues with comparing.

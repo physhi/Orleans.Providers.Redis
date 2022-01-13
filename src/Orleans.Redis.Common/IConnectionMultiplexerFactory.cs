@@ -1,8 +1,9 @@
-﻿using StackExchange.Redis;
-using System.Threading.Tasks;
-
-namespace Orleans.Redis.Common
+﻿namespace Orleans.Redis.Common
 {
+    using StackExchange.Redis;
+
+    using System.Threading.Tasks;
+
     public interface IConnectionMultiplexerFactory
     {
         /// <summary>
